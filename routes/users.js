@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/server', (req, res, next)=>{
+router.get('/api/server', (req, res, next)=>{
   res.send('This is from express backend!');
 })
 
