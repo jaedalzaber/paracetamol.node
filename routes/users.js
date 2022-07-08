@@ -67,6 +67,11 @@ router.get('/logout', (req, res) => {
     }
 });
 
+router.get('/facebook', auth.verifyFB, (req, res, next) => {
+    // Get all records
+    console.log(req.body);
+});
+
 
 module.exports = router;
 
