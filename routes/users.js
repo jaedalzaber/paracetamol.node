@@ -21,30 +21,30 @@ router.get('/', auth.verifyUser, (req, res, next) => {
 
 // Register User
 router.post('/signup', (req, res, next) => {
-  // Create User
-  User.register(new User({ username: req.body.username }),
-      req.body.password, (err, user) => {
-          if (err) {
-            console.log(err, req.body);
-              res.statusCode = 500;
-              res.setHeader('Content-Type', 'application/json');
-              res.json({ err: err });
-          }
-          else {
-              // Use passport to authenticate User
-              passport.authenticate('local')(req, res, () => {
-                  res.statusCode = 200;
-                  res.setHeader('Content-Type', 'application/json');
-                  res.json({ success: true, status: 'Registration Successful!' });
-              });
-          }
-      });
+    // Create User
+    User.register(new User({ username: req.body.username }),
+        req.body.password, (err, user) => {
+            if (err) {
+                console.log(err, req.body);
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.json({ err: err });
+            }
+            else {
+                // Use passport to authenticate User
+                passport.authenticate('local')(req, res, () => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({ success: true, status: 'Registration Successful!' });
+                });
+            }
+        });
 });
 
 // Login
 router.post('/login', passport.authenticate('local'), (req, res, next) => {
     // Create a token
-    const token = auth.getToken({ _id: req.user._id });
+    const token = auth.getToken({ _id: req.user._id }).token;
 
     // Response
     res.statusCode = 200;
@@ -55,22 +55,42 @@ router.post('/login', passport.authenticate('local'), (req, res, next) => {
 
 // Logout
 router.get('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy();
-        res.clearCookie('session-id');
-        res.redirect('/');
-    }
-    else {
-        var err = new Error('You are not logged in!');
-        err.status = 403;
-        next(err);
-    }
+    req.logout({ keepSessionInfo: false }, (err) => {
+        if (err)
+            console.log(err);
+        else {
+            if (req.session) {
+                req.session.destroy();
+                res.clearCookie('session-id');
+                res.redirect('/');
+            }
+            else {
+                var err = new Error('You are not logged in!');
+                err.status = 403;
+                next(err);
+            }
+        }
+    });
 });
 
 router.get('/facebook', auth.verifyFB, (req, res, next) => {
-    // Get all records
-    console.log(req.body);
+    
 });
+
+
+router.get('/facebook/callback', passport.authenticate('facebook'),
+    function (req, res) {
+    if (req.user) {
+        let token = auth.getToken({ _id: req.user._id });
+        console.log(token);
+        res.cookie('jwt', token, { secure: true, httpOnly: true });
+        res.cookie('adm', req.user.admin, { secure: true });
+        res.cookie('user', req.user.username, { secure: true });
+        // res.status(200).send();
+    }
+        res.redirect('/');
+    }
+);
 
 
 module.exports = router;
