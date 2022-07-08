@@ -100,7 +100,7 @@ router.get('/google/callback', passport.authenticate('google'),
     if (req.user) {
         let token = auth.getToken({ _id: req.user._id });
         console.log(token);
-        res.cookie('jwt-g', token, { secure: true, httpOnly: true });
+        res.cookie('jwt', token, { secure: true, httpOnly: true });
         res.cookie('adm', req.user.admin, { secure: true });
         res.cookie('user', req.user.username, { secure: true });
         // res.status(200).send();
