@@ -78,7 +78,7 @@ passport.use(new GoogleStrategy({
     scope: ['profile'],
     state: true
 },
-    function verify(accessToken, refreshToken, profile, cb) {
+    function verify(accessToken, refreshToken, profile, done) {
         User.findOne({ googleId: profile.id }, function (err, user) {
             if (err) {
                 console.log(err);
@@ -93,6 +93,7 @@ passport.use(new GoogleStrategy({
                         username: profile.displayName
                     })
                     newUser.googleId = profile.id;
+                    newUser.username = profile.displayName;
                     newUser.save(function (err, user) {
                         if (err) {
                             return done(err, false);
