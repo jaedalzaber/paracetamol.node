@@ -7,6 +7,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy
+const GoogleStrategy = require('passport-google-oauth20');
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -16,7 +17,7 @@ exports.getToken = (user) => {
     // redisClient.setex(user.tenantId + "_" + key, config.REFRESH_TOKEN_EXPIRATION_IN_SECONDS, JSON.stringify(user));
 
     let token = jwt.sign(
-        user, 
+        user,
         config.secretKey,
         {
             expiresIn: config.TOKEN_EXPIRATION_IN_SECONDS,
@@ -56,6 +57,42 @@ passport.use(new FacebookStrategy({
                     })
                     newUser.facebookId = profile.id;
                     newUser.username = profile.displayName;
+                    newUser.save(function (err, user) {
+                        if (err) {
+                            return done(err, false);
+                        }
+                        else {
+                            return done(null, user);
+                        }
+                    })
+                }
+            }
+        });
+    }
+));
+
+passport.use(new GoogleStrategy({
+    clientID: config.GOOGLE_APP_ID,
+    clientSecret: config.GOOGLE_APP_SECRET,
+    callbackURL: 'https://paracetamol-node.herokuapp.com/users/google/callback',
+    scope: ['profile'],
+    state: true
+},
+    function verify(accessToken, refreshToken, profile, cb) {
+        User.findOne({ googleId: profile.id }, function (err, user) {
+            if (err) {
+                console.log(err);
+                return done(err, false);
+            }
+            else {
+                if (user) {
+                    return done(null, user);
+                }
+                else {
+                    let newUser = new User({
+                        username: profile.displayName
+                    })
+                    newUser.googleId = profile.id;
                     newUser.save(function (err, user) {
                         if (err) {
                             return done(err, false);

@@ -92,6 +92,23 @@ router.get('/facebook/callback', passport.authenticate('facebook'),
     }
 );
 
+router.get('/google', passport.authenticate('google'));
+
+
+router.get('/google/callback', passport.authenticate('google'),
+    function (req, res) {
+    if (req.user) {
+        let token = auth.getToken({ _id: req.user._id });
+        console.log(token);
+        res.cookie('jwt-g', token, { secure: true, httpOnly: true });
+        res.cookie('adm', req.user.admin, { secure: true });
+        res.cookie('user', req.user.username, { secure: true });
+        // res.status(200).send();
+    }
+        res.redirect('/');
+    }
+);
+
 
 module.exports = router;
 
