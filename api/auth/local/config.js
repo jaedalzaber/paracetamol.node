@@ -1,0 +1,7 @@
+module.exports = {
+    secretKey: '12345-67890-09876-54321',
+    
+    TOKEN_EXPIRATION_IN_SECONDS : 3600,
+    REFRESH_TOKEN_EXPIRATION_IN_SECONDS : 86400,
+ }
+ 
