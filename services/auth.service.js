@@ -1,5 +1,5 @@
 const passport = require('passport');
-const config = require('../config');
+const config = require('../config/config');
 
 const User = require('../models/user');
 
