@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const awilix = require('awilix')
 
 const indexRouter = require('./routes/indexRoutes');
 const usersRouter = require('./routes/usersRoutes');
@@ -13,13 +14,13 @@ const usersRouter = require('./routes/usersRoutes');
 const passport = require('passport');
 const session = require('express-session')
 
-const config = require('./config');
+const config = require('./config/config');
 
 const app = express();
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({
-// 	extended: true
-// }));
+
+const container = awilix.createContainer({
+	injectionMode: awilix.InjectionMode.CLASSIC
+});
 
 mongoose.connect(config.mongoUrl)
 	.then((db) => {
