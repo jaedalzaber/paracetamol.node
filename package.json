@@ -9,6 +9,7 @@
   "dependencies": {
     "accesscontrol": "^2.2.1",
     "awilix": "^7.0.3",
+    "awilix-express": "^7.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "cookie-parser": "~1.4.4",

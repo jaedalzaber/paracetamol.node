@@ -1,0 +1,17 @@
+POST https://paracetamol-node.herokuapp.com/users/login
+content-type: application/json
+
+{
+    "username": "jaed",
+    "password": "password"
+}
+
+
+###
+
+GET https://paracetamol-node.herokuapp.com/users/logout
+
+###
+
+GET https://paracetamol-node.herokuapp.com/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmM3NGZlZmJiYTFlY2Y5NDcxZDA3NzYiLCJpYXQiOjE2NTc3OTk4ODEsImV4cCI6MTY1NzgwMzQ4MX0.YaXzarHs-COgP2pZhIQsosBEH3kNk9hfc9UXTIjQV3U

@@ -1,3 +1,4 @@
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -5,22 +6,27 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const awilix = require('awilix')
+
 
 const indexRouter = require('./routes/indexRoutes');
 const usersRouter = require('./routes/usersRoutes');
 
+const userRouter = require('./api/collections/users/user.route');
+
 // const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session')
+const awilix = require('awilix-express')
 
 const config = require('./config/config');
+const di = require('./di-setup');
+const Test = require('./services/test.service');
 
 const app = express();
 
-const container = awilix.createContainer({
-	injectionMode: awilix.InjectionMode.CLASSIC
-});
+const container = di();
+app.use(awilix.scopePerRequest(container));
+
 
 mongoose.connect(config.mongoUrl)
 	.then((db) => {
@@ -29,7 +35,6 @@ mongoose.connect(config.mongoUrl)
 	.catch((err) => {
 		console.log(err);
 	});
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -53,7 +58,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
+app.use('/user', userRouter);
 app.use('/users', usersRouter);
+
+const router = express.Router();
+const api = awilix.makeInvoker(Test)
+router.get('/todos', api('print'));
+app.use('/test', router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

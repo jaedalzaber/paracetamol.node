@@ -1,7 +1,7 @@
 const passport = require('passport');
 const config = require('../config/config');
 
-const User = require('../models/user');
+const User = require('../api/collections/users/user.model.js');
 
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -143,7 +143,7 @@ exports.generateRandomId = generateId = () => {
     return id;
 }
 
-// Verify an incoming user with jwt strategy we just configured above   
+// Verify an incoming user with jwt strategy we just configured above
 exports.verifyUser = passport.authenticate('jwt', { session: false });
 
 exports.verifyFB = passport.authenticate('facebook');
