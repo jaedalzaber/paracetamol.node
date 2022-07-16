@@ -1,10 +1,10 @@
 const ROLE = {
-    ADMIN             : 0,
-    MANAGER           : 1,
-    STORE_OWNER       : 2,
-    STORE_EMPLOYEE    : 3,
-    DEALER            : 4,
-    CUSTOMER          : 5
+    ADMIN             : "ADMIN",
+    MANAGER           : "MANAGER",
+    STORE_OWNER       : "STORE_OWNER",
+    STORE_EMPLOYEE    : "STORE_EMPLOYEE",
+    DEALER            : "DEALER",
+    CUSTOMER          : "CUSTOMER"
 };
 
 module.exports = ROLE;

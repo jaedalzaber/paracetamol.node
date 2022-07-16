@@ -24,9 +24,12 @@ const Test = require('./services/test.service');
 
 const app = express();
 
+const ROLE = require('./config/roles.js')
+
 const container = di();
 app.use(awilix.scopePerRequest(container));
 
+console.log(eval("(require('./config/roles.js'))"));
 
 mongoose.connect(config.mongoUrl)
 	.then((db) => {

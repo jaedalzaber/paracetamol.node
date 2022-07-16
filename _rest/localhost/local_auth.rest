@@ -18,4 +18,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmM3NGZlZ
 
 ###
 
+GET http://localhost:3000/user/count
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmM3NGZlZmJiYTFlY2Y5NDcxZDA3NzYiLCJpYXQiOjE2NTc4OTgwNjIsImV4cCI6MTY1NzkwMTY2Mn0.LtxfeNYQI8YP6WDxgKz482rq_tNcoxeatGDLDkTBIZs
+
+###
+
 GET http://localhost:3000/test/todos

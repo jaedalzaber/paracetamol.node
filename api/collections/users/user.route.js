@@ -5,11 +5,14 @@ const UserController = require('./user.controller');
 const auth = require('../../../services/auth.service');
 
 const router = express.Router();
-
 const api = awilix.makeInvoker(UserController);
 
 
 router.get('/', auth.verifyUser, api('get'));
+router.get('/count', auth.verifyUser, api('getCount'));
+
+
+
 
 module.exports = router;
 
